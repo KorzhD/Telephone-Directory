@@ -3,53 +3,55 @@ package org.telephone_directory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.telephone_directory.exception.DirectoryException;
+import org.telephone_directory.exception.NameException;
+import org.telephone_directory.exception.NumberException;
 
-public class Telephone_Directory {
-    private static volatile Telephone_Directory instance;
-    private final HashMap<String, String> numbers_directory = new HashMap<>();
+public class TelephoneDirectory {
+    private static TelephoneDirectory instance;
+    private static final HashMap<String, String> NUMBERS_DIRECTORY = new HashMap<>();
 
-    private Telephone_Directory() {
+    private TelephoneDirectory() {
     }
 
-    public static Telephone_Directory getInstance() {
+    public static TelephoneDirectory getInstance() {
         if (instance == null) {
-            synchronized (Telephone_Directory.class) {
-                if (instance == null)
-                    instance = new Telephone_Directory();
-            }
+            instance = new TelephoneDirectory();
         }
         return instance;
     }
 
-    public void add(String firstName, String lastName, String phone_number) throws NumberException, NameException {
-        if (firstName.equals(null) || firstName.equals("")) {
+    public void add(String firstName, String lastName, String phoneNumber) throws NumberException, NameException {
+        if (firstName.isBlank()) {
             throw new NameException("Incorrect name");
         }
+        // todo as for firstName
         if (lastName.equals(null) || lastName.equals("")) {
             throw new NameException("Incorrect last name");
         }
-        if (!(phone_number.subSequence(0, 4).equals("+380")) || !(phone_number.length() == 13)) {
+        // todo change to regular expression
+        if (!(phoneNumber.subSequence(0, 4).equals("+380")) || !(phoneNumber.length() == 13)) {
             throw new NumberException("Wrong number format. The number must begin with +380 and and contain 12 numbers");
         }
-        if (numbers_directory.containsValue(phone_number)) {
+        if (NUMBERS_DIRECTORY.containsValue(phoneNumber)) {
             throw new NumberException("This number is already used");
         } else {
             String fullName = firstName + " " + lastName;
-            numbers_directory.put(fullName, phone_number);
+            NUMBERS_DIRECTORY.put(fullName, phoneNumber);
         }
     }
 
     public String searchByName(String name) throws DirectoryException {
-        if (numbers_directory.containsKey(name)) {
-            return numbers_directory.get(name);
+        if (NUMBERS_DIRECTORY.containsKey(name)) {
+            return NUMBERS_DIRECTORY.get(name);
         } else {
             throw new DirectoryException("Invalid name or this person is not in the directory");
         }
     }
 
     public String searchByNumber(String number) throws DirectoryException {
-        if (numbers_directory.containsValue(number)) {
-            for (Map.Entry<String, String> entry : numbers_directory.entrySet()) {
+        if (NUMBERS_DIRECTORY.containsValue(number)) {
+            for (Map.Entry<String, String> entry : NUMBERS_DIRECTORY.entrySet()) {
                 if (entry.getValue().equals(number)) {
                     String name = entry.getKey();
                     return name;
@@ -63,25 +65,25 @@ public class Telephone_Directory {
 
     public void getAllContacts() {
         int i = 1;
-        Set<String> setNames = numbers_directory.keySet();
+        Set<String> setNames = NUMBERS_DIRECTORY.keySet();
         for (String name : setNames) {
-            System.out.println(i + ". Name: " + name + "\n Number: " + numbers_directory.get(name) + "\n");
+            System.out.println(i + ". Name: " + name + "\n Number: " + NUMBERS_DIRECTORY.get(name) + "\n");
                 i++;
             }
     }
 
     public void deleteContactByName(String name) throws NameException {
-        if(numbers_directory.containsKey(name)) {
-            numbers_directory.remove(name);
+        if(NUMBERS_DIRECTORY.containsKey(name)) {
+            NUMBERS_DIRECTORY.remove(name);
         }
         else throw new NameException("Can't delete this contact \n Check the name");
     }
     public void deleteContactByNumber(String number) throws NumberException {
-        if (numbers_directory.containsValue(number)) {
-            Set<String> setNames = numbers_directory.keySet();
+        if (NUMBERS_DIRECTORY.containsValue(number)) {
+            Set<String> setNames = NUMBERS_DIRECTORY.keySet();
             for(String name : setNames) {
-                if(numbers_directory.get(name).equals(number)) {
-                    numbers_directory.remove(name);
+                if(NUMBERS_DIRECTORY.get(name).equals(number)) {
+                    NUMBERS_DIRECTORY.remove(name);
                     break;
                 }
             }

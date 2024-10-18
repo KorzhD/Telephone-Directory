@@ -1,4 +1,4 @@
-package org.telephone_directory;
+package org.telephone_directory.exception;
 
 public class DirectoryException extends Exception {
     public DirectoryException(String message) {
