@@ -5,22 +5,10 @@ import org.telephone_directory.exception.DirectoryException;
 import org.telephone_directory.exception.NameException;
 import org.telephone_directory.exception.NumberException;
 
-import java.util.Scanner;
-/* Methods:
-        getInstance()
-        add(String firstName, String lastName, String phone_number)
-        searchByName(String name)
-        searchByNumber(String number)
-        getAllContacts()
-        deleteContactByName(String name)
-        deleteContactByNumber(String number)
-        getCommands()
-         */
-
 public class Main {
     public static void main(String[] args) throws NumberException, NameException, DirectoryException {
         TelephoneDirectoryManager.getCommands();
-        
+
     }
 }
 
