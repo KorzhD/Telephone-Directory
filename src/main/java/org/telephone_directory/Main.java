@@ -5,9 +5,8 @@ import org.telephone_directory.exception.DirectoryException;
 import org.telephone_directory.exception.NameException;
 import org.telephone_directory.exception.NumberException;
 
-public class Main {
-    public static void main(String[] args) throws NumberException, NameException, DirectoryException {
-        /* Methods:
+import java.util.Scanner;
+/* Methods:
         getInstance()
         add(String firstName, String lastName, String phone_number)
         searchByName(String name)
@@ -15,15 +14,13 @@ public class Main {
         getAllContacts()
         deleteContactByName(String name)
         deleteContactByNumber(String number)
+        getCommands()
          */
 
-        TelephoneDirectory telephoneDirectory = TelephoneDirectory.getInstance();
-        telephoneDirectory.add("Johan", "Liberty", "+380662563728");
-        telephoneDirectory.add("Anna", "Libert", "+380662898998");
-        telephoneDirectory.add("Ray", "Bredbery", "+380789452148");
-     //   telephoneDirectory.add("Alexander", "Tkachuk", "+380789452148"); // Number is already used
-      //  telephoneDirectory.add("Illa", "Tkachuk", "+380374458797798"); // Number is too long
-        telephoneDirectory.searchByNumber("+380789452148");
+public class Main {
+    public static void main(String[] args) throws NumberException, NameException, DirectoryException {
+        TelephoneDirectoryManager.getCommands();
+        
     }
 }
 

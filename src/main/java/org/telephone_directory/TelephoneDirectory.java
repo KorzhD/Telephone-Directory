@@ -20,13 +20,11 @@ public class TelephoneDirectory {
         }
         return instance;
     }
-
     public void add(String firstName, String lastName, String phoneNumber) throws NumberException, NameException {
         if (firstName.isBlank()) {
             throw new NameException("Incorrect name");
         }
-        // todo as for firstName
-        if (lastName.equals(null) || lastName.equals("")) {
+        if (lastName.isBlank()) {
             throw new NameException("Incorrect last name");
         }
         // todo change to regular expression
@@ -64,10 +62,11 @@ public class TelephoneDirectory {
 
 
     public void getAllContacts() {
+        if(NUMBERS_DIRECTORY.isEmpty()) System.out.println("Контактна книга - пуста");
         int i = 1;
         Set<String> setNames = NUMBERS_DIRECTORY.keySet();
         for (String name : setNames) {
-            System.out.println(i + ". Name: " + name + "\n Number: " + NUMBERS_DIRECTORY.get(name) + "\n");
+            System.out.println("\n" + i + ". Ім'я: " + name + "\n Номер: " + NUMBERS_DIRECTORY.get(name));
                 i++;
             }
     }
@@ -88,7 +87,7 @@ public class TelephoneDirectory {
                 }
             }
         }
-        else throw new NumberException("Can't delete this contact \n Check the name");
+        else throw new NumberException("Can't delete this contact \n Check the number");
     }
 
 }
