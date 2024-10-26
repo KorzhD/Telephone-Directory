@@ -14,7 +14,7 @@ public class TelephoneDirectoryUtil {
     private Scanner sc = new Scanner(System.in);
 
     public void getCommands() throws SQLException {
-        System.out.println("Список команд: \n " +
+        System.out.println("\n Список команд: \n " +
                 "1. Додати контакт \n " +
                 "2. Відкрити телефонну книгу \n " +
                 "3. Знайти контакт за ім'ям \n " +
@@ -40,7 +40,7 @@ public class TelephoneDirectoryUtil {
                 System.out.println();
                 break;
             case("3"):
-                System.out.print("Введіть ім'я: ");
+                System.out.print("Введіть повне ім'я: ");
                 fullName = sc.nextLine();
                 telephoneDirectoryService.searchByName(fullName);
                 break;
