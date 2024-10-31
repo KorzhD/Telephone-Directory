@@ -17,10 +17,12 @@ public class TelephoneDirectoryUtil {
         System.out.println("\n Список команд: \n " +
                 "1. Додати контакт \n " +
                 "2. Відкрити телефонну книгу \n " +
-                "3. Знайти контакт за ім'ям \n " +
+                "3. Знайти контакт за повним ім'ям \n " +
                 "4. Знайти контакт за номером \n" +
                 " 5. Видалити контакт за номером \n" +
-                " 6. Видалити контакт за ім'ям");
+                " 6. Видалити контакт за повним ім'ям \n" +
+                " 7. Знайти контакти по прізвищу \n" +
+                " 8. Змінити номер контакта ");
         System.out.print("Команда: ");
         switchCommand(sc.nextLine());
     }
@@ -29,7 +31,7 @@ public class TelephoneDirectoryUtil {
             case("1"):
                 System.out.print("Введіть ім'я: ");
                 firstName = sc.nextLine();
-                System.out.print("Введіть фамілію: ");
+                System.out.print("Введіть прізвище: ");
                 lastName = sc.nextLine();
                 System.out.print("Введіть номер: ");
                 number = sc.nextLine();
@@ -61,7 +63,20 @@ public class TelephoneDirectoryUtil {
                 lastName = sc.nextLine();
                 telephoneDirectoryService.deleteContactByName(firstName, lastName);
                 break;
-
+            case("7"):
+                System.out.print("Введіть прізвище: ");
+                lastName = sc.nextLine();
+                telephoneDirectoryService.findByLastName(lastName);
+                break;
+            case("8"):
+                System.out.print("Введіть ім'я: ");
+                firstName = sc.nextLine();
+                System.out.print("Введіть пірзвище: ");
+                lastName = sc.nextLine();
+                System.out.print("Введіть новий номер: ");
+                number = sc.nextLine();
+                telephoneDirectoryService.changeNumber(firstName, lastName, number);
+                break;
             default:
                 System.out.println("Невірно набрана команда");
                 break;

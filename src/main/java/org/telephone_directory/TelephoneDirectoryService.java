@@ -11,7 +11,7 @@ public class TelephoneDirectoryService {
     private final HashMap<String, String> NUMBERS_DIRECTORY = new HashMap<>();
 
     private final String numberFormat = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$";
-    ;
+
     private TelephoneDirectoryDBService telephoneDirectoryService = new TelephoneDirectoryDBService();
 
     private TelephoneDirectoryService() {
@@ -37,10 +37,11 @@ public class TelephoneDirectoryService {
         }
 
         if (!(phoneNumber.matches(numberFormat))) {
-            System.out.println("Неправильний формат. Номер має починатись з +380 та містити в собі 10 цифр");
+            System.out.println("Неправильний формат номеру");
             return;
         }
-        if (telephoneDirectoryService.findByName(firstName, lastName) !=null) {
+        if (telephoneDirectoryService.findByFullName(firstName, lastName) !=null
+                && telephoneDirectoryService.findByNumber(phoneNumber) == null) {
             telephoneDirectoryService.addContact(corrFirstName, corrLastName, phoneNumber);
             System.out.println("Дотатковий номер контакта був доданий до Телефонного Довідника");
         }
@@ -60,7 +61,7 @@ public class TelephoneDirectoryService {
         try {
             String firstName = name.substring(0, name.indexOf(" "));
             String lastName = name.substring(name.indexOf(" ") + 1, name.length());
-            Contact contact = telephoneDirectoryService.findByName(firstName, lastName);
+            Contact contact = telephoneDirectoryService.findByFullName(firstName, lastName);
             if (contact != null) {
                 System.out.println("За цим ім'ям знайдено контакт: " + contact.getFirstName()
                         + " " + contact.getLastName()
@@ -93,7 +94,7 @@ public class TelephoneDirectoryService {
             System.out.println("Контактна книга - пуста");
         } else {
 
-            list.forEach(contact -> System.out.println(contact.getFirstName()
+            list.forEach(contact -> System.out.println("\n" + contact.getFirstName()
                     + " " + contact.getLastName()
                     + " " + contact.getNumber() + "\n ---------------------"));
 
@@ -109,12 +110,31 @@ public class TelephoneDirectoryService {
     }
 
     public void deleteContactByNumber(String number) throws SQLException {
-
+        Contact contact = telephoneDirectoryService.findByNumber(number);
         if(telephoneDirectoryService.deleteByNumber(number)) {
-            System.out.println("Контакт видалено успішно");
+            System.out.println("Контакт " + contact.getFirstName() + " " + contact.getLastName() + " видалено успішно");
         } else {
             System.out.println("Невірно введений номер");
         }
+    }
+    public void findByLastName(String lastName) throws SQLException {
+       List<Contact> list = telephoneDirectoryService.findByLastName(lastName);
+       if(!(list.isEmpty())) {
+           System.out.println("З таким прізвищем знайдено контакти:");
+           list.forEach(contact -> System.out.println(contact.getFirstName()
+                   + " " + contact.getLastName()
+                   + " " + contact.getNumber() + "\n ---------------------"));
+       } else {
+           System.out.println("Контактів з таким прізвищем немає");
+       }
+    }
+    public void changeNumber(String firstName, String lastName, String newNumber) {
+        if(telephoneDirectoryService.changeNumber(firstName, lastName, newNumber)) {
+            System.out.println("Номер змінено - успішно");
+        } else {
+            System.out.println("Щось пішло не так. Перевірте введені дані");
+        }
+
     }
 
 }
